@@ -1,0 +1,6 @@
+{
+  "appTitle": "go_movies",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
