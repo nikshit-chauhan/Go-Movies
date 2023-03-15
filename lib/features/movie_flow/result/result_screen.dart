@@ -1,36 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_movies/core/constants.dart';
 import 'package:go_movies/core/widgets/primary_button.dart';
 import 'package:go_movies/features/movie_flow/genre/genre.dart';
+import 'package:go_movies/features/movie_flow/movie_flow_controller.dart';
 
 import 'movie.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends ConsumerWidget {
   static route({bool fullscreenDialog = true}) => MaterialPageRoute(
-        builder: (context) => ResultScreen(),
+        builder: (context) => const ResultScreen(),
         fullscreenDialog: fullscreenDialog,
       );
-  ResultScreen({super.key});
+  const ResultScreen({super.key});
 
   final double movieHeight = 150;
 
-  final movie = Movie(
-    title: 'John Wick',
-    overview:
-        'An ex-hit-man comes out of retirement to track down the gangsters that killed his dog and took his car.',
-    voteAverage: 7.4,
-    genres: const [
-      Genre(name: 'Action'),
-      Genre(name: 'Crime'),
-      Genre(name: 'Thriller')
-    ],
-    releaseDate: '2014-05-24',
-    backdropPath: '',
-    posterPath: '',
-  );
-
   @override
-  Widget build(context) {
+  Widget build(context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -46,7 +33,7 @@ class ResultScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       bottom: -(movieHeight / 2),
                       child: MovieImageDetails(
-                        movie: movie,
+                        movie: ref.watch(movieFlowControllerProvider).movie,
                         movieHeight: movieHeight,
                       ),
                     ),
@@ -56,7 +43,7 @@ class ResultScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    movie.overview,
+                    ref.watch(movieFlowControllerProvider).movie.overview,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -76,7 +63,7 @@ class ResultScreen extends StatelessWidget {
   }
 }
 
-class MovieImageDetails extends StatelessWidget {
+class MovieImageDetails extends ConsumerWidget {
   const MovieImageDetails({
     super.key,
     required this.movie,
@@ -87,7 +74,7 @@ class MovieImageDetails extends StatelessWidget {
   final double movieHeight;
 
   @override
-  Widget build(context) {
+  Widget build(context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -114,7 +101,7 @@ class MovieImageDetails extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${movie.voteAverage}',
+                      movie.voteAverage.toString(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.textTheme.bodyMedium?.color
                             ?.withOpacity(0.62),
@@ -136,11 +123,11 @@ class MovieImageDetails extends StatelessWidget {
   }
 }
 
-class CoverImage extends StatelessWidget {
+class CoverImage extends ConsumerWidget {
   const CoverImage({super.key});
 
   @override
-  Widget build(context) {
+  Widget build(context, WidgetRef ref) {
     return Container(
       constraints: const BoxConstraints(minHeight: 298),
       child: ShaderMask(
