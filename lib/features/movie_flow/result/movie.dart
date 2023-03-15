@@ -13,7 +13,7 @@ class Movie {
   final String? backdropPath;
   final String? posterPath;
 
-  Movie({
+  const Movie({
     required this.title,
     required this.overview,
     required this.voteAverage,
