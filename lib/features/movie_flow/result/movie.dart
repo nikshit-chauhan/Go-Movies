@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
+import 'package:go_movies/features/movie_flow/result/movie_entity.dart';
 import '../genre/genre.dart';
 
 @immutable
@@ -22,6 +21,20 @@ class Movie {
     this.backdropPath,
     this.posterPath,
   });
+  factory Movie.fromEntity(MovieEntity entity, List<Genre> genres) {
+    return Movie(
+      title: entity.title,
+      overview: entity.overview,
+      voteAverage: entity.voteAverage,
+      genres: genres
+          .where((genre) => entity.genreIds.contains(genre.id))
+          .toList(growable: false),
+      releaseDate: entity.releaseDate,
+      backdropPath:
+          'https://image.tmdb.org/t/p/original/${entity.backdropPath}',
+      posterPath: 'https://image.tmdb.org/t/p/original/${entity.posterPath}',
+    );
+  }
 
   Movie.initial()
       : title = '',
