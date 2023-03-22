@@ -1,43 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_movies/features/movie_flow/genre/genre.dart';
 import 'package:go_movies/features/movie_flow/result/movie.dart';
-
-const genresMock = [
-  Genre(name: 'Action'),
-  Genre(name: 'Comedy'),
-  Genre(name: 'Horror'),
-  Genre(name: 'Anime'),
-  Genre(name: 'Drama'),
-  Genre(name: 'Family'),
-  Genre(name: 'Romance'),
-];
-const movieMock = Movie(
-  title: 'John Wick',
-  overview:
-      'An ex-hit-man comes out of retirement to track down the gangsters that killed his dog and took his car.',
-  voteAverage: 7.4,
-  genres: [
-    Genre(name: 'Action'),
-    Genre(name: 'Crime'),
-    Genre(name: 'Thriller')
-  ],
-  releaseDate: '2014-05-24',
-  backdropPath: '',
-  posterPath: '',
-);
 
 @immutable
 class MovieFlowState {
   final PageController pageController;
   final int rating;
   final int yearsBack;
-  final List<Genre> genres;
-  final Movie movie;
+  final AsyncValue<List<Genre>> genres;
+  final AsyncValue<Movie> movie;
 
   const MovieFlowState({
     required this.pageController,
-    this.movie = movieMock,
-    this.genres = genresMock,
+    required this.movie,
+    required this.genres,
     this.rating = 5,
     this.yearsBack = 10,
   });
@@ -46,8 +23,8 @@ class MovieFlowState {
       {PageController? pageController,
       int? rating,
       int? yearsBack,
-      List<Genre>? genres,
-      Movie? movie}) {
+      AsyncValue<List<Genre>>? genres,
+      AsyncValue<Movie>? movie}) {
     return MovieFlowState(
       pageController: pageController ?? this.pageController,
       rating: rating ?? this.rating,
