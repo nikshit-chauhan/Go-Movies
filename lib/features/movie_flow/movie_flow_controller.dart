@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_movies/features/movie_flow/genre/genre.dart';
 import 'package:go_movies/features/movie_flow/movie_flow_state.dart';
-import 'movie_repository.dart';
 import 'movie_service.dart';
 import 'result/movie.dart';
 
